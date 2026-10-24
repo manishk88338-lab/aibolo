@@ -218,8 +218,10 @@ jobs:
 
               private fun find(name: String): String? {
                   if (name.isBlank() || !has(Manifest.permission.READ_CONTACTS)) return null
-                  val ph = ContactsContract.CommonDataKinds.Phone
-                  contentResolver.query(ph.CONTENT_URI, arrayOf(ph.NUMBER), "${ph.DISPLAY_NAME} LIKE ?", arrayOf("%$name%"), null)
+                  val uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+                  val num = ContactsContract.CommonDataKinds.Phone.NUMBER
+                  val nm = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
+                  contentResolver.query(uri, arrayOf(num), "$nm LIKE ?", arrayOf("%$name%"), null)
                       ?.use { if (it.moveToFirst()) return it.getString(0) }
                   return null
               }
